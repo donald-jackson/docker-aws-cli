@@ -1,4 +1,4 @@
-FROM docker:18.06.3
+FROM docker:19.03.1
 
 RUN apk --update add \
     python \
