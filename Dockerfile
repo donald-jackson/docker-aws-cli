@@ -165,6 +165,10 @@ RUN set -o errexit -o nounset \
 
 # RUN usermod -aG docker gradle
 
+RUN curl -L https://github.com/Praqma/helmsman/releases/download/v1.8.0/helmsman_1.8.0_linux_amd64.tar.gz | tar zx \
+  && mv helmsman /usr/local/bin/helmsman \
+  && chmod +x /usr/local/bin/helmsman
+
 # Create Gradle volume
 USER gradle
 VOLUME "/home/gradle/.gradle"
@@ -175,11 +179,9 @@ RUN helm init --client-only
 RUN helm plugin install https://github.com/viglesiasce/helm-gcs.git
 RUN helm plugin install https://github.com/databus23/helm-diff
 RUN helm plugin install https://github.com/chartmuseum/helm-push
-RUN helm plugin install https://github.com/futuresimple/helm-secrets
+# RUN helm plugin install https://github.com/futuresimple/helm-secrets
 
-RUN curl -L https://github.com/Praqma/helmsman/releases/download/v1.8.0/helmsman_1.8.0_linux_amd64.tar.gz | tar zx \
-  && mv helmsman /usr/local/bin/helmsman \
-  && chmod +x /usr/local/bin/helmsman
+
 
 
 RUN set -o errexit -o nounset \
