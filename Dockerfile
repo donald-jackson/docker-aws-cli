@@ -169,6 +169,17 @@ RUN curl -L https://github.com/Praqma/helmsman/releases/download/v1.8.0/helmsman
   && mv helmsman /usr/local/bin/helmsman \
   && chmod +x /usr/local/bin/helmsman
 
+
+ENV LEIN_ROOT 1
+ENV LEIN_VERSION 2.7.1
+
+RUN apk add --no-cache wget ca-certificates bash 
+RUN wget -q "https://raw.githubusercontent.com/technomancy/leiningen/$LEIN_VERSION/bin/lein" -O /usr/local/bin/lein && \
+  chmod 0755 /usr/local/bin/lein && \
+  lein && \
+  # Do clean up
+  rm -rf /tmp/*
+
 # Create Gradle volume
 USER gradle
 VOLUME "/home/gradle/.gradle"
@@ -180,9 +191,6 @@ RUN helm plugin install https://github.com/viglesiasce/helm-gcs.git
 RUN helm plugin install https://github.com/databus23/helm-diff
 RUN helm plugin install https://github.com/chartmuseum/helm-push
 # RUN helm plugin install https://github.com/futuresimple/helm-secrets
-
-
-
 
 RUN set -o errexit -o nounset \
   && echo "Testing Gradle installation" \
