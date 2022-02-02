@@ -46,7 +46,7 @@ RUN curl -L https://storage.googleapis.com/kubernetes-release/release/${KUBECTL_
   & wait \
   && chmod +x /usr/local/bin/kubectl \
   && chmod +x /usr/local/bin/aws-iam-authenticator \
-  && wget -q https://storage.googleapis.com/kubernetes-helm/helm-${HELM_VERSION}-linux-amd64.tar.gz -O - | tar -xzO linux-amd64/helm > /usr/local/bin/helm \
+  && wget -q https://get.helm.sh/helm-${HELM_VERSION}-linux-amd64.tar.gz -O - | tar -xzO linux-amd64/helm > /usr/local/bin/helm \
   && chmod +x /usr/local/bin/helm
 
 #Install java
@@ -91,24 +91,24 @@ RUN set -eux; \
   ARCH="$(apk --print-arch)"; \
   case "${ARCH}" in \
   aarch64|arm64) \
-  ESUM='00b6b6aad2259afc0d30d0b4f84ebd0796982f58aa5237e532289c08f2bbe9f1'; \
-  BINARY_URL='https://github.com/AdoptOpenJDK/openjdk8-binaries/releases/download/jdk8u-2019-10-12-19-18/OpenJDK8U-jdk_aarch64_linux_hotspot_2019-10-12-19-18.tar.gz'; \
+  ESUM='6e8b6b037148cf20a284b5b257ec7bfdf9cc31ccc87778d0dfd95a2fddf228d4'; \
+  BINARY_URL='https://github.com/AdoptOpenJDK/openjdk15-binaries/releases/download/jdk-15.0.2%2B7/OpenJDK15U-jdk_aarch64_linux_hotspot_15.0.2_7.tar.gz'; \
   ;; \
   armhf) \
-  ESUM='cc70e63a96f1d3af80eb62bac7ffa46a5ac9a5a73fa348272bf34b0bdc8ef95c'; \
-  BINARY_URL='https://github.com/AdoptOpenJDK/openjdk8-binaries/releases/download/jdk8u-2019-09-05-18-46/OpenJDK8U-jdk_arm_linux_hotspot_2019-09-05-18-46.tar.gz'; \
+  ESUM='6e8b6b037148cf20a284b5b257ec7bfdf9cc31ccc87778d0dfd95a2fddf228d4'; \
+  BINARY_URL='https://github.com/AdoptOpenJDK/openjdk15-binaries/releases/download/jdk-15.0.2%2B7/OpenJDK15U-jdk_arm_linux_hotspot_15.0.2_7.tar.gz'; \
   ;; \
   ppc64el|ppc64le) \
-  ESUM='8792d8049dd80cd633cfae2932b2ec3820ab4b25a9dac5f9c9e0026f5d52bcbd'; \
-  BINARY_URL='https://github.com/AdoptOpenJDK/openjdk8-binaries/releases/download/jdk8u-2019-10-12-19-18/OpenJDK8U-jdk_ppc64le_linux_hotspot_2019-10-12-19-18.tar.gz'; \
+  ESUM='ff39c0380224e419d940382c4d651cb1e6297a794854e0cc459c1fd4973b3368'; \
+  BINARY_URL='https://github.com/AdoptOpenJDK/openjdk15-binaries/releases/download/jdk-15.0.2%2B7/OpenJDK15U-jdk_ppc64_aix_hotspot_15.0.2_7.tar.gz'; \
   ;; \
   s390x) \
-  ESUM='fac2fbd83afbb140052648ef64a995f78a7fa710bb699ab54f03fb773d6acc78'; \
-  BINARY_URL='https://github.com/AdoptOpenJDK/openjdk8-binaries/releases/download/jdk8u-2019-10-12-19-18/OpenJDK8U-jdk_s390x_linux_hotspot_2019-10-12-19-18.tar.gz'; \
+  ESUM='7dc35a8a4ba1ccf6cfe96fcf26e09ed936f1802ca668ca6bf708e2392c35ab6a'; \
+  BINARY_URL='https://github.com/AdoptOpenJDK/openjdk15-binaries/releases/download/jdk-15.0.2%2B7/OpenJDK15U-jdk_s390x_linux_hotspot_15.0.2_7.tar.gz'; \
   ;; \
   amd64|x86_64) \
-  ESUM='dedb2d2d5a4b9e6912e8e0cf4d0ad8aee2e7a7eeb0ae94af6631ddd14cb13188'; \
-  BINARY_URL='https://github.com/AdoptOpenJDK/openjdk8-binaries/releases/download/jdk8u-2019-10-18-12-27/OpenJDK8U-jdk_x64_linux_hotspot_2019-10-18-12-27.tar.gz'; \
+  ESUM='94f20ca8ea97773571492e622563883b8869438a015d02df6028180dd9acc24d'; \
+  BINARY_URL='https://github.com/AdoptOpenJDK/openjdk15-binaries/releases/download/jdk-15.0.2%2B7/OpenJDK15U-jdk_x64_linux_hotspot_15.0.2_7.tar.gz'; \
   ;; \
   *) \
   echo "Unsupported arch: ${ARCH}"; \
@@ -130,9 +130,9 @@ ENV JAVA_HOME=/opt/java/openjdk \
 
 # Install gradle
 ENV GRADLE_HOME /opt/gradle
-ENV GRADLE_VERSION 4.5.1
+ENV GRADLE_VERSION 6.9.2
 
-ARG GRADLE_DOWNLOAD_SHA256=3e2ea0d8b96605b7c528768f646e0975bd9822f06df1f04a64fd279b1a17805e
+ARG GRADLE_DOWNLOAD_SHA256=8b356fd8702d5ffa2e066ed0be45a023a779bba4dd1a68fd11bc2a6bdc981e8f
 RUN set -o errexit -o nounset \
   && echo "Installing build dependencies" \
   && apk add --no-cache --virtual .build-deps \
@@ -171,7 +171,7 @@ RUN curl -L https://github.com/Praqma/helmsman/releases/download/v1.8.0/helmsman
 
 
 ENV LEIN_ROOT 1
-ENV LEIN_VERSION 2.7.1
+ENV LEIN_VERSION 2.9.8
 
 RUN apk add --no-cache wget ca-certificates bash 
 RUN wget -q "https://raw.githubusercontent.com/technomancy/leiningen/$LEIN_VERSION/bin/lein" -O /usr/local/bin/lein && \
@@ -186,7 +186,7 @@ VOLUME "/home/gradle/.gradle"
 WORKDIR /home/gradle
 
 # Install Helm plugins
-RUN helm init --client-only
+RUN helm init --client-only  --skip-refresh && helm repo rm stable && helm repo add stable https://charts.helm.sh/stable
 RUN helm plugin install https://github.com/viglesiasce/helm-gcs.git
 RUN helm plugin install https://github.com/databus23/helm-diff
 RUN helm plugin install https://github.com/chartmuseum/helm-push
